@@ -1,9 +1,9 @@
 package com.gloot.springbootcodetest.leaderboard.api.v2;
 
-import com.gloot.springbootcodetest.leaderboard.domain.Leaderboard;
+import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardDto;
 import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardService;
 import com.gloot.springbootcodetest.leaderboard.domain.NewLeaderboardRequest;
-import com.gloot.springbootcodetest.leaderboard.domain.Player;
+import com.gloot.springbootcodetest.leaderboard.domain.PlayerDto;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
@@ -208,15 +208,15 @@ class LeaderboardControllerTest {
                 .andExpect(jsonPath("$.message", is("message")));
     }
 
-    private static Leaderboard getLeaderboard() {
-        return new Leaderboard(
+    private static LeaderboardDto getLeaderboard() {
+        return new LeaderboardDto(
                 "DOTA2",
                 UUID.fromString(TEST_UUID),
                 List.of(getPlayer())
         );
     }
 
-    private static Player getPlayer() {
-        return new Player("NickFury", UUID.fromString(TEST_UUID), 1337, 1);
+    private static PlayerDto getPlayer() {
+        return new PlayerDto("NickFury", UUID.fromString(TEST_UUID), 1337, 1);
     }
 }

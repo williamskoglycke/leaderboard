@@ -2,10 +2,11 @@ package com.gloot.springbootcodetest.leaderboard.api.v2;
 
 import com.gloot.springbootcodetest.leaderboard.api.ErrorResponse;
 import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardService;
-import com.gloot.springbootcodetest.leaderboard.domain.leaderboard.Leaderboard;
-import com.gloot.springbootcodetest.leaderboard.domain.leaderboard.NewLeaderboardRequest;
-import com.gloot.springbootcodetest.leaderboard.domain.player.Player;
+import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardDto;
+import com.gloot.springbootcodetest.leaderboard.domain.PlayerDto;
+import com.gloot.springbootcodetest.leaderboard.domain.NewLeaderboardRequest;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
+import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.gloot.springbootcodetest.leaderboard.api.ErrorResponse.badRequest;
@@ -35,53 +38,57 @@ public class LeaderboardController {
     private final LeaderboardService leaderboardService;
 
     @GetMapping
-    public List<Leaderboard> getAllLeaderboards() {
+    public List<LeaderboardDto> getAllLeaderboards() {
         return leaderboardService.getAllLeaderboards();
     }
 
     @PostMapping
-    public ResponseEntity<?> addLeaderboard(@RequestBody NewLeaderboardRequest request) {
+    public ResponseEntity<Map<String, UUID>> addLeaderboard(@RequestBody NewLeaderboardRequest request) {
         // TODO: Fix Springs default "body missing" error to a nicer one.
         UUID leaderboardId = leaderboardService.addLeaderboard(request);
-        return ResponseEntity.created(URI.create(API_VERSION_2 + "/leaderboards/" + leaderboardId)).build();
+        return ResponseEntity
+                .created(URI.create(API_VERSION_2 + "/leaderboards/" + leaderboardId))
+                .body(Map.of("leaderboardId", leaderboardId));
     }
 
     @GetMapping("/{leaderboardId}")
-    public Leaderboard getLeaderboardById(@PathVariable String leaderboardId) {
+    public LeaderboardDto getLeaderboardById(@PathVariable UUID leaderboardId) {
         return leaderboardService.getLeaderboardById(leaderboardId);
     }
 
     @GetMapping("/{leaderboardId}/players")
-    public List<Player> getPlayersByLeaderboard(@PathVariable String leaderboardId) {
+    public List<PlayerDto> getPlayersByLeaderboard(@PathVariable UUID leaderboardId) {
         return leaderboardService.getLeaderboardById(leaderboardId).getPlayers();
     }
 
     @GetMapping("/{leaderboardId}/players/{playerId}")
-    public Player getLeaderboardPlayerById(@PathVariable String leaderboardId,
-                                           @PathVariable String playerId) {
+    public PlayerDto getLeaderboardPlayerById(@PathVariable UUID leaderboardId,
+                                              @PathVariable UUID playerId) {
         return leaderboardService.getLeaderboardPlayerById(leaderboardId, playerId);
     }
 
     @PostMapping("/{leaderboardId}/players/{playerId}")
-    public ResponseEntity<?> addPlayerToLeaderboard(@PathVariable String leaderboardId,
-                                                    @PathVariable String playerId) {
-        String userId = leaderboardService.addPlayerToLeaderboard(leaderboardId, playerId);
-        URI location = URI.create(API_VERSION_2 + "/leaderboards/" + leaderboardId + "/player/" + userId);
+    public ResponseEntity<Object> addPlayerToLeaderboard(@PathVariable UUID leaderboardId,
+                                                         @PathVariable UUID playerId,
+                                                         @RequestParam(name = "score", required = false) Optional<Integer> newScore) {
+        leaderboardService.addPlayerToLeaderboard(leaderboardId, playerId, newScore);
+        URI location = URI.create(API_VERSION_2 + "/leaderboards/" + leaderboardId + "/player/" + playerId);
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{leaderboardId}/players/{playerId}")
-    public void updateUserScore(@PathVariable String leaderboardId,
-                                @PathVariable String playerId,
+    public void updateUserScore(@PathVariable UUID leaderboardId,
+                                @PathVariable UUID playerId,
                                 @RequestParam("score") Integer newScore) {
         // TODO: Fix Springs default "param missing" error to a nicer one.
         leaderboardService.updatePlayerScore(leaderboardId, playerId, newScore);
     }
 
     @GetMapping("/{leaderboardId}/players/{playerId}/position")
-    public Integer getLeaderboardUserPosition(@PathVariable String leaderboardId,
-                                              @PathVariable String playerId) {
-        return leaderboardService.getLeaderboardPlayerPosition(leaderboardId, playerId);
+    public Map<String, Integer> getLeaderboardUserPosition(@PathVariable UUID leaderboardId,
+                                                           @PathVariable UUID playerId) {
+        Integer position = leaderboardService.getLeaderboardPlayerPosition(leaderboardId, playerId);
+        return Map.of("position", position);
     }
 
     @ResponseStatus(BAD_REQUEST)
@@ -98,5 +105,13 @@ public class LeaderboardController {
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .body(badRequest(4002, e.getMessage()));
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(LeaderboardOrPlayerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleLeaderboardOrPlayerNotFoundException(LeaderboardOrPlayerNotFoundException e) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(badRequest(4003, e.getMessage()));
     }
 }

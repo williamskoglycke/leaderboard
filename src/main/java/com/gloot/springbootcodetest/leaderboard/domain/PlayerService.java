@@ -1,6 +1,5 @@
 package com.gloot.springbootcodetest.leaderboard.domain;
 
-import com.gloot.springbootcodetest.leaderboard.domain.player.NewPlayerRequest;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.PlayerRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.PlayerEntity;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PlayerService {
 
-    PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
     public UUID registerNewPlayer(NewPlayerRequest request) {
         PlayerEntity playerEntity = new PlayerEntity();
@@ -20,5 +19,4 @@ public class PlayerService {
         PlayerEntity savedPlayer = playerRepository.save(playerEntity);
         return savedPlayer.getPlayerId();
     }
-
 }

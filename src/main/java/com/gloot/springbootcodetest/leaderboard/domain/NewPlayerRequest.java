@@ -1,17 +1,19 @@
-package com.gloot.springbootcodetest.leaderboard.domain.player;
+package com.gloot.springbootcodetest.leaderboard.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gloot.springbootcodetest.leaderboard.errors.ValidationException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Value;
 
-@Getter
-@ToString
-@EqualsAndHashCode
-public abstract class PlayerBase {
-    private final String nick;
+@Value
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class NewPlayerRequest {
 
-    public PlayerBase(String nick) {
+    String nick;
+
+    @JsonCreator
+    public NewPlayerRequest(@JsonProperty("nick") String nick) {
         this.nick = validate(nick);
     }
 

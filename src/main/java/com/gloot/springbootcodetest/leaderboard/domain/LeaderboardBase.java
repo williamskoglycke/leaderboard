@@ -1,4 +1,4 @@
-package com.gloot.springbootcodetest.leaderboard.domain.leaderboard;
+package com.gloot.springbootcodetest.leaderboard.domain;
 
 import com.gloot.springbootcodetest.leaderboard.errors.ValidationException;
 import lombok.EqualsAndHashCode;

@@ -18,6 +18,7 @@ public class LeaderboardControllerV1 {
     private final LeaderboardService service;
 
     @GetMapping
+    @Deprecated
     public List<LeaderboardEntryDto> getLeaderboard() {
         return service.getListOfAllLeaderboardEntriesAsDTO();
     }
