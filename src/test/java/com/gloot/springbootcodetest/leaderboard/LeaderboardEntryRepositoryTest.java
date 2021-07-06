@@ -6,13 +6,14 @@ import static org.hamcrest.core.Is.is;
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
 
-import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LeaderboardRepositoryTest extends SpringBootComponentTest {
-  @Autowired LeaderboardRepository repository;
+public class LeaderboardEntryRepositoryTest extends SpringBootComponentTest {
+  @Autowired
+  LeaderboardEntryRepository repository;
 
   @Test
   void saveAndRetrieve() {

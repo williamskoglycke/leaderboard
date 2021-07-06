@@ -1,10 +1,11 @@
 package com.gloot.springbootcodetest.leaderboard.infrastructure;
 
+import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntity;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Optional;
 import java.util.UUID;
 
-import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface LeaderboardRepository extends JpaRepository<LeaderboardEntryEntity, UUID> {}
+public interface LeaderboardRepository extends CrudRepository<LeaderboardEntity, UUID> {
+    Optional<LeaderboardEntity> findByLeaderboard_LeaderboardIdAndPlayer_PlayerId(UUID leaderboardId, UUID playerId);
+}

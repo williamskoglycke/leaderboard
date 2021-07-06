@@ -1,6 +1,11 @@
 package com.gloot.springbootcodetest.leaderboard.domain;
 
+import com.gloot.springbootcodetest.leaderboard.domain.leaderboard.Leaderboard;
+import com.gloot.springbootcodetest.leaderboard.domain.leaderboard.NewLeaderboardRequest;
+import com.gloot.springbootcodetest.leaderboard.domain.player.Player;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.PlayerRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static com.gloot.springbootcodetest.leaderboard.infrastructure.mapper.LeaderboardEntryMapper.mapToDto;
 
@@ -16,10 +22,13 @@ import static com.gloot.springbootcodetest.leaderboard.infrastructure.mapper.Lea
 @AllArgsConstructor
 public class LeaderboardService {
 
-    private final LeaderboardRepository leaderboardRepository;
+    LeaderboardEntryRepository leaderboardEntryRepository;
+    LeaderboardRepository leaderboardRepository;
+    PlayerRepository playerRepository;
+
 
     public List<LeaderboardEntryDto> getListOfAllLeaderboardEntriesAsDTO() {
-        List<LeaderboardEntryEntity> allEntries = leaderboardRepository.findAll();
+        List<LeaderboardEntryEntity> allEntries = leaderboardEntryRepository.findAll();
         Collections.sort(allEntries, new Comparator<LeaderboardEntryEntity>() {
             public int compare(LeaderboardEntryEntity e1, LeaderboardEntryEntity e2) {
                 return e2.getScore() - e1.getScore();
@@ -47,31 +56,36 @@ public class LeaderboardService {
         return leaderboardEntryDtos;
     }
 
-    public List<LeaderboardDto> getAllLeaderboards() {
+    public List<Leaderboard> getAllLeaderboards() {
         // TODO
         return null;
     }
 
-    public String addLeaderboard(LeaderboardRequest request) {
+    public UUID addLeaderboard(NewLeaderboardRequest request) {
         // TODO
         return null;
     }
 
-    public LeaderboardDto getLeaderboardById(String leaderboardId) {
+    public Leaderboard getLeaderboardById(String leaderboardId) {
         // TODO
         return null;
     }
 
-    public LeaderboardEntryDto getLeaderboardUserById(String leaderboardId, String userId) {
+    public Player getLeaderboardPlayerById(String leaderboardId, String playerId) {
         // TODO
         return null;
     }
 
-    public void updateUserScore(String leaderboardId, String userId, Integer newScore) {
+    public int getLeaderboardPlayerPosition(String leaderboardId, String playerId) {
+        // TODO
+        return -1;
+    }
+
+    public void updatePlayerScore(String leaderboardId, String playerId, Integer newScore) {
         // TODO
     }
 
-    public String addNewUserToLeaderboard(String leaderboardId, PlayerRequest playerRequest) {
+    public String addPlayerToLeaderboard(String leaderboardId, String playerId) {
         // TODO
         return null;
     }

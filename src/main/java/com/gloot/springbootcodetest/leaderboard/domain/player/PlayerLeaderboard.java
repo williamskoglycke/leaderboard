@@ -11,4 +11,5 @@ import java.util.UUID;
 public class PlayerLeaderboard extends LeaderboardBase {
     UUID id;
     Integer score;
+    Integer position;
 }

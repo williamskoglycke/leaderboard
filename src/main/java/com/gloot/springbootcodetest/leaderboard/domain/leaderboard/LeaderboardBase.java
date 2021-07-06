@@ -1,14 +1,17 @@
-package com.gloot.springbootcodetest.leaderboard.domain;
+package com.gloot.springbootcodetest.leaderboard.domain.leaderboard;
 
 import com.gloot.springbootcodetest.leaderboard.errors.ValidationException;
-import lombok.Value;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Value
-public class LeaderboardRequest {
+@Getter
+@ToString
+@EqualsAndHashCode
+public abstract class LeaderboardBase {
+    private final String gameName;
 
-    String gameName;
-
-    public LeaderboardRequest(String gameName) {
+    public LeaderboardBase(String gameName) {
         this.gameName = validate(gameName);
     }
 

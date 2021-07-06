@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
 
-import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 public class LeaderboardControllerV1Test extends SpringBootComponentTest {
 
   @Autowired private MockMvc mockMvc;
-  @Autowired LeaderboardRepository repository;
+  @Autowired LeaderboardEntryRepository repository;
 
   @Test
   void getLeaderboardTest() throws Exception {
