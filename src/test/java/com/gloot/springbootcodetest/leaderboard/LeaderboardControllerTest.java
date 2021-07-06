@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
+
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;

@@ -1,4 +1,4 @@
-package com.gloot.springbootcodetest.leaderboard;
+package com.gloot.springbootcodetest.leaderboard.infrastructure.entities;
 
 import java.util.UUID;
 import javax.persistence.Entity;

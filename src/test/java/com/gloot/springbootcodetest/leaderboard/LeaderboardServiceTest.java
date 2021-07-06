@@ -4,13 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
+
+import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardEntryDto;
+import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardService;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LeaderboardServiceTest extends SpringBootComponentTest {
 
-  @Autowired LeaderboardRepository repository;
-  @Autowired LeaderboardService service;
+  @Autowired
+  LeaderboardRepository repository;
+  @Autowired
+  LeaderboardService service;
 
   @Test
   void getLeaderboard() {

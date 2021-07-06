@@ -1,4 +1,4 @@
-package com.gloot.springbootcodetest.leaderboard;
+package com.gloot.springbootcodetest.leaderboard.domain;
 
 import lombok.Builder;
 import lombok.Value;

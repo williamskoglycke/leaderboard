@@ -5,6 +5,9 @@ import static org.hamcrest.core.Is.is;
 
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
+
+import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
+import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
