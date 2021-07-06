@@ -71,7 +71,7 @@ public class LeaderboardService {
         // TODO
     }
 
-    public String addNewUserToLeaderboard(String leaderboardId) {
+    public String addNewUserToLeaderboard(String leaderboardId, PlayerRequest playerRequest) {
         // TODO
         return null;
     }

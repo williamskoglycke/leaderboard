@@ -9,9 +9,16 @@ public class LeaderboardRequest {
     String gameName;
 
     public LeaderboardRequest(String gameName) {
+        this.gameName = validate(gameName);
+    }
+
+    private String validate(String gameName) {
         if (gameName == null || gameName.isBlank()) {
             throw new ValidationException("gameName is required");
         }
-        this.gameName = gameName;
+        if (gameName.length() > 50) {
+            throw new ValidationException("gameName cannot exceed 50 characters");
+        }
+        return gameName;
     }
 }
