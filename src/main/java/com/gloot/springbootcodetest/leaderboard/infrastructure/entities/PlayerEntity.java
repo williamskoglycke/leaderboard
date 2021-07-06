@@ -1,21 +1,14 @@
 package com.gloot.springbootcodetest.leaderboard.infrastructure.entities;
 
-import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.Set;
 import java.util.UUID;
 
-import static javax.persistence.FetchType.EAGER;
-
-@Data
-@Entity
-@Table(name = "players")
+@Entity(name = "players")
 public class PlayerEntity {
 
     @Id
@@ -24,7 +17,30 @@ public class PlayerEntity {
 
     private String nick;
 
-    @OneToMany(mappedBy = "player", fetch = EAGER)
+    @OneToMany(mappedBy = "player")
     private Set<LeaderboardPlayerEntity> leaderboardPlayerEntities;
 
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(UUID playerId) {
+        this.playerId = playerId;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public Set<LeaderboardPlayerEntity> getLeaderboardPlayerEntities() {
+        return leaderboardPlayerEntities;
+    }
+
+    public void setLeaderboardPlayerEntities(Set<LeaderboardPlayerEntity> leaderboardPlayerEntities) {
+        this.leaderboardPlayerEntities = leaderboardPlayerEntities;
+    }
 }
