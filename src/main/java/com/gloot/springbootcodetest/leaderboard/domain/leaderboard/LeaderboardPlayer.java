@@ -2,14 +2,23 @@ package com.gloot.springbootcodetest.leaderboard.domain.leaderboard;
 
 import com.gloot.springbootcodetest.leaderboard.domain.player.PlayerBase;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.UUID;
 
-@Value
+@Getter
+@ToString
 @EqualsAndHashCode(callSuper = true)
 public class LeaderboardPlayer extends PlayerBase {
-    UUID id;
-    Integer score;
-    Integer position;
+    private final UUID id;
+    private final Integer score;
+    private final Integer position;
+
+    public LeaderboardPlayer(String nick, UUID id, Integer score, Integer position) {
+        super(nick);
+        this.id = id;
+        this.score = score;
+        this.position = position;
+    }
 }

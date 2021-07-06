@@ -1,9 +1,13 @@
 package com.gloot.springbootcodetest.leaderboard.domain.leaderboard;
 
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.ToString;
 
-@Value
+@ToString
 @EqualsAndHashCode(callSuper = true)
 public class NewLeaderboardRequest extends LeaderboardBase {
+
+    public NewLeaderboardRequest(String gameName) {
+        super(gameName);
+    }
 }
