@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static com.gloot.springbootcodetest.leaderboard.api.v2.LeaderboardControllerTest.TEST_UUID;
+import static com.gloot.springbootcodetest.leaderboard.util.TestHelper.TEST_UUID;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

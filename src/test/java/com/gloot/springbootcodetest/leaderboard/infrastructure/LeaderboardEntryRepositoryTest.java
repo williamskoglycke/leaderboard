@@ -1,4 +1,4 @@
-package com.gloot.springbootcodetest.leaderboard;
+package com.gloot.springbootcodetest.leaderboard.infrastructure;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -6,12 +6,11 @@ import static org.hamcrest.core.Is.is;
 import com.gloot.springbootcodetest.SpringBootComponentTest;
 import java.util.List;
 
-import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LeaderboardEntryRepositoryTest extends SpringBootComponentTest {
+class LeaderboardEntryRepositoryTest extends SpringBootComponentTest {
   @Autowired
   LeaderboardEntryRepository repository;
 

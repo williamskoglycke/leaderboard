@@ -1,9 +1,7 @@
 package com.gloot.springbootcodetest.leaderboard.api.v2;
 
-import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardDto;
 import com.gloot.springbootcodetest.leaderboard.domain.LeaderboardService;
 import com.gloot.springbootcodetest.leaderboard.domain.NewLeaderboardRequest;
-import com.gloot.springbootcodetest.leaderboard.domain.PlayerDto;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
@@ -20,6 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.gloot.springbootcodetest.leaderboard.util.TestHelper.TEST_UUID;
+import static com.gloot.springbootcodetest.leaderboard.util.TestHelper.getLeaderboard;
+import static com.gloot.springbootcodetest.leaderboard.util.TestHelper.getPlayer;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -32,8 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(LeaderboardController.class)
 class LeaderboardControllerTest {
-
-    public static final String TEST_UUID = "9604e4d8-a763-4d43-9def-6704f74bb09b";
 
     @Autowired
     private MockMvc mockMvc;
@@ -140,7 +139,7 @@ class LeaderboardControllerTest {
     void getLeaderboardUserPosition() throws Exception {
         Mockito
                 .when(leaderboardService.getLeaderboardPlayerPosition(any(UUID.class), any(UUID.class)))
-                .thenReturn(getPlayer().getPosition().get());
+                .thenReturn(getPlayer().getPosition());
 
         mockMvc.perform(get("/api/v2/leaderboards/" + TEST_UUID + "/players/" + TEST_UUID + "/position"))
                 .andDo(print())
@@ -206,17 +205,5 @@ class LeaderboardControllerTest {
                 .andExpect(jsonPath("$.httpStatus", is("Bad Request")))
                 .andExpect(jsonPath("$.errorCode", is(4003)))
                 .andExpect(jsonPath("$.message", is("message")));
-    }
-
-    private static LeaderboardDto getLeaderboard() {
-        return new LeaderboardDto(
-                "DOTA2",
-                UUID.fromString(TEST_UUID),
-                List.of(getPlayer())
-        );
-    }
-
-    private static PlayerDto getPlayer() {
-        return new PlayerDto("NickFury", UUID.fromString(TEST_UUID), 1337, 1);
     }
 }

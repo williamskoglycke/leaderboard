@@ -1,4 +1,4 @@
-package com.gloot.springbootcodetest.leaderboard;
+package com.gloot.springbootcodetest.leaderboard.api.v1;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
@@ -11,14 +11,20 @@ import java.util.List;
 
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-public class LeaderboardControllerV1Test extends SpringBootComponentTest {
+class LeaderboardControllerV1Test extends SpringBootComponentTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired LeaderboardEntryRepository repository;
+
+  @BeforeEach
+  void setUp() {
+    repository.deleteAll();
+  }
 
   @Test
   void getLeaderboardTest() throws Exception {

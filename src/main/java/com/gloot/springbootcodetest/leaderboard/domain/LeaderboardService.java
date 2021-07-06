@@ -30,6 +30,7 @@ public class LeaderboardService {
 
     private static final String LEADERBOARD_NOT_FOUND_TEMPLATE = "Could not find leaderboard with id: %s";
     private static final String PLAYER_NOT_FOUND_TEMPLATE = "Could not find player with id: %s";
+    private static final String PLAYER_NOT_FOUND_ON_LEADERBOARD_TEMPLATE = "Could not find player with id: %s on leaderboard: %s";
 
     private final LeaderboardEntryRepository leaderboardEntryRepository;
     private final LeaderboardPlayerRepository leaderboardPlayerRepository;
@@ -67,7 +68,7 @@ public class LeaderboardService {
     public LeaderboardDto getLeaderboardById(UUID leaderboardId) {
         return leaderboardRepository.findById(leaderboardId)
                 .map(LeaderboardMapper::mapToLeaderboard)
-                .orElseThrow(() -> new LeaderboardNotFoundException(LEADERBOARD_NOT_FOUND_TEMPLATE + leaderboardId));
+                .orElseThrow(() -> new LeaderboardNotFoundException(String.format(LEADERBOARD_NOT_FOUND_TEMPLATE, leaderboardId)));
     }
 
     public PlayerDto getLeaderboardPlayerById(UUID leaderboardId, UUID playerId) {
@@ -75,11 +76,11 @@ public class LeaderboardService {
         return leaderboard.getPlayers().stream()
                 .filter(player -> player.getId().equals(playerId))
                 .findFirst()
-                .orElseThrow(() -> new LeaderboardPlayerNotFoundException(PLAYER_NOT_FOUND_TEMPLATE + playerId));
+                .orElseThrow(() -> new LeaderboardPlayerNotFoundException(String.format(PLAYER_NOT_FOUND_ON_LEADERBOARD_TEMPLATE, playerId, leaderboardId)));
     }
 
     public Integer getLeaderboardPlayerPosition(UUID leaderboardId, UUID playerId) {
-        return getLeaderboardPlayerById(leaderboardId, playerId).getPosition().orElse(null);
+        return getLeaderboardPlayerById(leaderboardId, playerId).getPosition();
     }
 
     public void updatePlayerScore(UUID leaderboardId, UUID playerId, Integer newScore) {
@@ -96,7 +97,7 @@ public class LeaderboardService {
 
         PlayerEntity playerEntity = playerRepository
                 .findById(playerId)
-                .orElseThrow(() -> new LeaderboardPlayerNotFoundException(PLAYER_NOT_FOUND_TEMPLATE + playerId));
+                .orElseThrow(() -> new LeaderboardPlayerNotFoundException(String.format(PLAYER_NOT_FOUND_TEMPLATE, playerId)));
 
         LeaderboardPlayerEntity leaderboardPlayerEntity = new LeaderboardPlayerEntity();
         leaderboardPlayerEntity.setLeaderboard(leaderboardEntity);
