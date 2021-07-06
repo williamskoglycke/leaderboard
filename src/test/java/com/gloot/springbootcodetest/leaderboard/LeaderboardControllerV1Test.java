@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-public class LeaderboardControllerTest extends SpringBootComponentTest {
+public class LeaderboardControllerV1Test extends SpringBootComponentTest {
 
   @Autowired private MockMvc mockMvc;
   @Autowired LeaderboardRepository repository;

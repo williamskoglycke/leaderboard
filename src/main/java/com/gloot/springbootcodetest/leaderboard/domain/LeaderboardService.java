@@ -46,4 +46,33 @@ public class LeaderboardService {
 
         return leaderboardEntryDtos;
     }
+
+    public List<LeaderboardDto> getAllLeaderboards() {
+        // TODO
+        return null;
+    }
+
+    public String addLeaderboard(LeaderboardRequest request) {
+        // TODO
+        return null;
+    }
+
+    public LeaderboardDto getLeaderboardById(String leaderboardId) {
+        // TODO
+        return null;
+    }
+
+    public LeaderboardEntryDto getLeaderboardUserById(String leaderboardId, String userId) {
+        // TODO
+        return null;
+    }
+
+    public void updateUserScore(String leaderboardId, String userId, Integer newScore) {
+        // TODO
+    }
+
+    public String addNewUserToLeaderboard(String leaderboardId) {
+        // TODO
+        return null;
+    }
 }

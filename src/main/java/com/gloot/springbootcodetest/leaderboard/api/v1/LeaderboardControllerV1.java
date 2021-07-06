@@ -14,7 +14,7 @@ import static com.gloot.springbootcodetest.leaderboard.api.Url.API_VERSION_1;
 @RestController
 @RequestMapping(API_VERSION_1 + "/leaderboard")
 @AllArgsConstructor
-public class LeaderboardController {
+public class LeaderboardControllerV1 {
     private final LeaderboardService service;
 
     @GetMapping
