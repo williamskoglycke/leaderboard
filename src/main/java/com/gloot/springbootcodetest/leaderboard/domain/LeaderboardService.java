@@ -22,6 +22,8 @@ import java.util.stream.IntStream;
 
 import static com.gloot.springbootcodetest.leaderboard.infrastructure.mapper.LeaderboardMapper.mapToDto;
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.nullsLast;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -41,7 +43,7 @@ public class LeaderboardService {
     public List<LeaderboardEntryDto> getListOfAllLeaderboardEntriesAsDTO() {
         List<LeaderboardEntryEntity> leaderboardEntries = leaderboardEntryRepository.findAll()
                 .stream()
-                .sorted(comparing(LeaderboardEntryEntity::getScore).reversed())
+                .sorted(comparing(LeaderboardEntryEntity::getScore, nullsLast(reverseOrder())))
                 .collect(toList());
 
         return IntStream.range(0, leaderboardEntries.size())
@@ -74,7 +76,7 @@ public class LeaderboardService {
     public PlayerDto getLeaderboardPlayerById(UUID leaderboardId, UUID playerId) {
         LeaderboardDto leaderboard = getLeaderboardById(leaderboardId);
         return leaderboard.getPlayers().stream()
-                .filter(player -> player.getId().equals(playerId))
+                .filter(player -> playerId.equals(player.getId()))
                 .findFirst()
                 .orElseThrow(() -> new LeaderboardPlayerNotFoundException(String.format(PLAYER_NOT_FOUND_ON_LEADERBOARD_TEMPLATE, playerId, leaderboardId)));
     }

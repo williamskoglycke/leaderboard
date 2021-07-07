@@ -8,5 +8,5 @@ import lombok.Value;
 public class LeaderboardEntryDto {
   int position;
   String nick;
-  int score;
+  Integer score;
 }

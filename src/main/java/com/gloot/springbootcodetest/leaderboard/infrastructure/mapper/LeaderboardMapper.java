@@ -7,13 +7,13 @@ import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.Leaderbo
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardEntryEntity;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.entities.LeaderboardPlayerEntity;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.nullsLast;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 
 public final class LeaderboardMapper {
@@ -45,7 +45,7 @@ public final class LeaderboardMapper {
 
         List<LeaderboardPlayerEntity> playersSortedByScore = leaderboardPlayerEntities
                 .stream()
-                .sorted(comparing(LeaderboardPlayerEntity::getScore, nullsLast(Comparator.reverseOrder())))
+                .sorted(comparing(LeaderboardPlayerEntity::getScore, nullsLast(reverseOrder())))
                 .collect(toList());
 
         return IntStream.range(0, playersSortedByScore.size())

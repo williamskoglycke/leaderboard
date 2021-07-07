@@ -49,7 +49,8 @@ class LeaderboardServiceTest extends SpringBootComponentTest {
     void getLeaderboard() {
         List<LeaderboardEntryEntity> entities = List
                 .of(new LeaderboardEntryEntity("g-looter-2", 90),
-                        new LeaderboardEntryEntity("g-looter-1", 100));
+                        new LeaderboardEntryEntity("g-looter-1", 100),
+                        new LeaderboardEntryEntity("g-looter-3", null));
         leaderboardEntryRepository.saveAll(entities);
 
         List<LeaderboardEntryDto> leaderboard = leaderboardService
@@ -58,6 +59,7 @@ class LeaderboardServiceTest extends SpringBootComponentTest {
         // Verify ordering by score
         assertEqual(1, entities.get(1), leaderboard.get(0));
         assertEqual(2, entities.get(0), leaderboard.get(1));
+        assertEqual(3, entities.get(2), leaderboard.get(2));
     }
 
     private void assertEqual(int pos, LeaderboardEntryEntity entity, LeaderboardEntryDto dto) {
