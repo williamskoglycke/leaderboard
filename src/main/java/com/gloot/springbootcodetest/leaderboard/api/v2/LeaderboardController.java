@@ -8,6 +8,7 @@ import com.gloot.springbootcodetest.leaderboard.domain.NewLeaderboardRequest;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
+import com.gloot.springbootcodetest.leaderboard.errors.PlayerAlreadyInLeaderboardException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -113,5 +114,13 @@ public class LeaderboardController {
         return ResponseEntity
                 .status(BAD_REQUEST)
                 .body(badRequest(4003, e.getMessage()));
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(PlayerAlreadyInLeaderboardException.class)
+    public ResponseEntity<ErrorResponse> handlePlayerAlreadyInLeaderboardException(PlayerAlreadyInLeaderboardException e) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(badRequest(4004, e.getMessage()));
     }
 }

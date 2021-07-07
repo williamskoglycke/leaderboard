@@ -1,6 +1,7 @@
 package com.gloot.springbootcodetest.leaderboard.domain;
 
 import com.gloot.springbootcodetest.SpringBootComponentTest;
+import com.gloot.springbootcodetest.leaderboard.errors.PlayerAlreadyInLeaderboardException;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardPlayerRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LeaderboardServiceTest extends SpringBootComponentTest {
@@ -95,6 +97,65 @@ class LeaderboardServiceTest extends SpringBootComponentTest {
         assertThat(player2Dto.getNick()).isEqualTo("RandyRavage");
         assertThat(player2Dto.getPosition()).isEqualTo(2);
         assertThat(player2Dto.getScore()).isNull();
+    }
+
+    @Test
+    void registerTwoPlayersToTwoLeaderboards() {
+        UUID leaderboard1Id = leaderboardService.addLeaderboard(new NewLeaderboardRequest("Overwatch2"));
+        UUID leaderboard2Id = leaderboardService.addLeaderboard(new NewLeaderboardRequest("Siege"));
+        UUID player1Id = playerService.registerNewPlayer(new NewPlayerRequest("RandyRavage"));
+        UUID player2Id = playerService.registerNewPlayer(new NewPlayerRequest("SandySavage"));
+        leaderboardService.addPlayerToLeaderboard(leaderboard1Id, player1Id, Optional.empty());
+        leaderboardService.addPlayerToLeaderboard(leaderboard1Id, player2Id, Optional.of(10));
+        leaderboardService.addPlayerToLeaderboard(leaderboard2Id, player1Id, Optional.of(50));
+        leaderboardService.addPlayerToLeaderboard(leaderboard2Id, player2Id, Optional.of(60));
+
+        List<LeaderboardDto> allLeaderboards = leaderboardService.getAllLeaderboards();
+        assertThat(allLeaderboards).hasSize(2);
+
+        LeaderboardDto leaderboard1Dto = allLeaderboards.get(0);
+        assertThat(leaderboard1Dto.getId()).isNotNull();
+        assertThat(leaderboard1Dto.getGameName()).isEqualTo("Overwatch2");
+        assertThat(leaderboard1Dto.getPlayers()).hasSize(2);
+
+        PlayerDto player1Dto = leaderboard1Dto.getPlayers().get(0);
+        assertThat(player1Dto.getId()).isNotNull();
+        assertThat(player1Dto.getNick()).isEqualTo("SandySavage");
+        assertThat(player1Dto.getPosition()).isEqualTo(1);
+        assertThat(player1Dto.getScore()).isEqualTo(10);
+
+        PlayerDto player2Dto = leaderboard1Dto.getPlayers().get(1);
+        assertThat(player2Dto.getId()).isNotNull();
+        assertThat(player2Dto.getNick()).isEqualTo("RandyRavage");
+        assertThat(player2Dto.getPosition()).isEqualTo(2);
+        assertThat(player2Dto.getScore()).isNull();
+
+        LeaderboardDto leaderboard2Dto = allLeaderboards.get(1);
+        assertThat(leaderboard2Dto.getId()).isNotNull();
+        assertThat(leaderboard2Dto.getGameName()).isEqualTo("Siege");
+        assertThat(leaderboard2Dto.getPlayers()).hasSize(2);
+
+        PlayerDto player1DtoOnLeaderboard2 = leaderboard2Dto.getPlayers().get(0);
+        assertThat(player1DtoOnLeaderboard2.getId()).isNotNull();
+        assertThat(player1DtoOnLeaderboard2.getNick()).isEqualTo("SandySavage");
+        assertThat(player1DtoOnLeaderboard2.getPosition()).isEqualTo(1);
+        assertThat(player1DtoOnLeaderboard2.getScore()).isEqualTo(60);
+
+        PlayerDto player2DtoOnLeaderboard2 = leaderboard2Dto.getPlayers().get(1);
+        assertThat(player2DtoOnLeaderboard2.getId()).isNotNull();
+        assertThat(player2DtoOnLeaderboard2.getNick()).isEqualTo("RandyRavage");
+        assertThat(player2DtoOnLeaderboard2.getPosition()).isEqualTo(2);
+        assertThat(player2DtoOnLeaderboard2.getScore()).isEqualTo(50);
+    }
+
+    @Test
+    void playerAlreadyOnLeaderboard() {
+        UUID leaderboardId = leaderboardService.addLeaderboard(new NewLeaderboardRequest("Quake III"));
+        UUID playerId = playerService.registerNewPlayer(new NewPlayerRequest("RandyRavage"));
+        leaderboardService.addPlayerToLeaderboard(leaderboardId, playerId, Optional.empty());
+
+        assertThatExceptionOfType(PlayerAlreadyInLeaderboardException.class)
+                .isThrownBy(() -> leaderboardService.addPlayerToLeaderboard(leaderboardId, playerId, Optional.empty()));
     }
 
     @Test

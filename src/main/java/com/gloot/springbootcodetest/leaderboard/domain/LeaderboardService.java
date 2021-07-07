@@ -3,6 +3,7 @@ package com.gloot.springbootcodetest.leaderboard.domain;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
+import com.gloot.springbootcodetest.leaderboard.errors.PlayerAlreadyInLeaderboardException;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardEntryRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardPlayerRepository;
 import com.gloot.springbootcodetest.leaderboard.infrastructure.LeaderboardRepository;
@@ -93,6 +94,10 @@ public class LeaderboardService {
     }
 
     public void addPlayerToLeaderboard(UUID leaderboardId, UUID playerId, Optional<Integer> newScore) {
+        if (leaderboardPlayerRepository.findByLeaderboard_LeaderboardIdAndPlayer_PlayerId(leaderboardId, playerId).isPresent()) {
+            throw new PlayerAlreadyInLeaderboardException("Player with id: " + playerId + " already exist on the leaderboard with id: " + leaderboardId);
+        }
+
         LeaderboardEntity leaderboardEntity = leaderboardRepository
                 .findById(leaderboardId)
                 .orElseThrow(() -> new LeaderboardNotFoundException(String.format(LEADERBOARD_NOT_FOUND_TEMPLATE, leaderboardId)));

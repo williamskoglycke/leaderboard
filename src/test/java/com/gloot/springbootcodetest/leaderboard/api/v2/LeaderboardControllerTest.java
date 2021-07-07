@@ -5,6 +5,7 @@ import com.gloot.springbootcodetest.leaderboard.domain.NewLeaderboardRequest;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardOrPlayerNotFoundException;
 import com.gloot.springbootcodetest.leaderboard.errors.LeaderboardPlayerNotFoundException;
+import com.gloot.springbootcodetest.leaderboard.errors.PlayerAlreadyInLeaderboardException;
 import com.gloot.springbootcodetest.leaderboard.errors.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -204,6 +205,21 @@ class LeaderboardControllerTest {
                 .andExpect(jsonPath("$.httpCode", is(400)))
                 .andExpect(jsonPath("$.httpStatus", is("Bad Request")))
                 .andExpect(jsonPath("$.errorCode", is(4003)))
+                .andExpect(jsonPath("$.message", is("message")));
+    }
+
+    @Test
+    void handlePlayerAlreadyInLeaderboardException() throws Exception {
+        Mockito
+                .when(leaderboardService.getLeaderboardById(any(UUID.class)))
+                .thenThrow(new PlayerAlreadyInLeaderboardException("message"));
+
+        mockMvc.perform(get("/api/v2/leaderboards/9604e4d8-a763-4d43-9def-6704f74bb09b"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.httpCode", is(400)))
+                .andExpect(jsonPath("$.httpStatus", is("Bad Request")))
+                .andExpect(jsonPath("$.errorCode", is(4004)))
                 .andExpect(jsonPath("$.message", is("message")));
     }
 }
